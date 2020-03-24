@@ -1,12 +1,31 @@
 #!/usr/bin/env groovy
 
-def call(body) {
-    def config = [:]
+#def call(body) {
+#    def config = [:]
+#    body.resolveStrategy = Closure.DELEGATE_FIRST
+#    body.delegate = config
+#    body()
+#
+#    node {
+#        echo "config=${config}"
+#    }
+#}
+
+
+def call(Map pipelineParams) {
+    // evaluate the body block, and collect configuration into the object
+    def pipelineParams= [:]
     body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = config
+    body.delegate = pipelineParams
     body()
 
-    node {
-        echo "config=${config}"
-    }
+pipeline {
+
+	agent ('agent-jnlp')
+		stages {
+		stage ('sample'){
+			 sh 'echo "coming"'
+				}
+			}
+	}
 }
